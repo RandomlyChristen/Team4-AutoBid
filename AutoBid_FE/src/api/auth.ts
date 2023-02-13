@@ -44,8 +44,7 @@ export type UserInfo = { userId: number, username: string, email: string, phone:
 export const requestLiveSession = asyncTaskWrapper(async (code: string): Promise<UserInfo | null> => {
     const res = await fetch(`${API_BASE_URL}${SESSION_ENDPOINT}`, {
         method: 'POST',
-        headers: { 'X-Auth-Code': code },
-        credentials: 'include'
+        headers: { 'X-Auth-Code': code }
     });
     if (res.ok)
         return await res.json() as UserInfo;
@@ -54,8 +53,7 @@ export const requestLiveSession = asyncTaskWrapper(async (code: string): Promise
 
 export const requestInvalidateSession = asyncTaskWrapper(async (): Promise<boolean> => {
     const res = await fetch(`${API_BASE_URL}${SESSION_ENDPOINT}`, {
-        method: 'DELETE',
-        credentials: 'include'
+        method: 'DELETE'
     });
     return res.ok;
 });
