@@ -10,7 +10,7 @@
     "test": "parcel test/test.html --open"
   },
   "dependencies": {
-    "@stomp/stompjs": "6.1.2",
+    "@stomp/stompjs": "7.0.0",
     "dotenv": "^16.0.3",
     "emojisplosion": "^2.6.1",
     "redux": "4.0.0",
