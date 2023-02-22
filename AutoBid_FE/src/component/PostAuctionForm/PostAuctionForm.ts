@@ -94,7 +94,7 @@ class PostAuctionForm extends Component<ModalState> {
             this.fetchFiles();
             this.addImages();
         });
-        this.addEvent('change', '.post-auction-form__auction-start-price__input', ({ target }) => {
+        this.addEvent('change', '.post-auction-form__auction-start-price__input', ({target}) => {
             const value = (target as HTMLInputElement).value;
             this.updatePriceStr(parseInt(value));
         });
@@ -103,19 +103,19 @@ class PostAuctionForm extends Component<ModalState> {
         });
     }
 
-    mounted() {  // TODO test 빼고
-        requestMyCarList(true).then(carList => {
+    mounted() {
+        requestMyCarList().then(carList => {
             if (!carList) return;
             const notForSaleCarList = carList.filter(carInfo => carInfo.state === CarState.NOT_FOR_SALE);
             if (!notForSaleCarList.length) return;
             const $carSelect = this.$target.querySelector('.post-auction-form__car-select') as HTMLSelectElement;
             $carSelect.innerHTML += notForSaleCarList.map(carInfo => `
-                <option value="${carInfo.id}">${carInfo.name} ${carInfo.sellName}</option>
-            `).join('');  // TODO DTO 획일화좀
+                <option value="${carInfo.carId}">${carInfo.name} ${carInfo.sellName}</option>
+            `).join('');
         });
     }
 
-    private files: FileList|null = null;
+    private files: FileList | null = null;
 
     openFileSelector() {
         const uploadInput = this.$target.querySelector('.post-auction-form__file-upload-input') as HTMLInputElement;
@@ -132,7 +132,7 @@ class PostAuctionForm extends Component<ModalState> {
         $imageHolder.innerHTML = '';
 
         if (!this.files) return;
-        [...this.files].forEach((file, idx) => {
+        [...this.files].forEach((file) => {
             const reader = new FileReader();
             reader.onload = () => {
                 $imageHolder.innerHTML += `
@@ -150,7 +150,7 @@ class PostAuctionForm extends Component<ModalState> {
         $priceStr.innerText = getPriceStr(value);
     }
 
-    validateAndGetForm(): AuctionForm|null {
+    validateAndGetForm(): AuctionForm | null {
         if (!this.files || !this.files.length) {
             Toast.show('사진이 등록되지 않았습니다', 1000);
             return null;
@@ -231,7 +231,7 @@ class PostAuctionForm extends Component<ModalState> {
     post() {
         const auctionForm = this.validateAndGetForm();
         if (auctionForm) {
-            requestPostAuction(auctionForm, true).then(result => {
+            requestPostAuction(auctionForm).then(result => {
                 if (result) {
                     Toast.show('경매를 등록했습니다', 1000);
                     closeModal();
